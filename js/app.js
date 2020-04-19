@@ -69,6 +69,14 @@ class UI {
     this.showBalance()
   }
 
+  expenseListClick (target) {
+    if (target.classList.contains('edit-icon')) {
+      this.editExpense(target)
+    } else if (target.classList.contains('delete-icon')) {
+      this.deleteExpense(target)
+    }
+  }
+
   addExpense (expense) {
     const div = document.createElement('div')
     div.classList.add('expense')
@@ -87,6 +95,25 @@ class UI {
       </div>`
 
     this.expenseList.appendChild(div)
+  }
+
+  editExpense (target) {
+    const id = +target.dataset.id
+    const expense = this.itemList.filter(item => item.id === id)
+    this.itemList = this.itemList.filter(item => item.id !== id)
+    this.expenseList.removeChild(target.parentElement.parentElement.parentElement)
+
+    this.expenseInput.value = expense[0].title
+    this.amountInput.value = expense[0].amount
+
+    this.showBalance()
+  }
+
+  deleteExpense (target) {
+    const id = +target.dataset.id
+    this.itemList = this.itemList.filter(item => item.id !== id)
+    this.expenseList.removeChild(target.parentElement.parentElement.parentElement)
+    this.showBalance()
   }
 
   showBalance () {
@@ -134,7 +161,7 @@ function eventListeners () {
   })
   // expense list click
   expenseList.addEventListener('click', (event) => {
-    event.preventDefault()
+    ui.expenseListClick(event.target.parentElement)
   })
 }
 
