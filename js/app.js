@@ -110,8 +110,7 @@ class UI {
   }
 
   totalExpense () {
-    const total = 0
-    return total
+    return this.itemList.reduce((a, c) => a + c.amount, 0)
   }
 }
 
